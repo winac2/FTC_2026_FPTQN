@@ -67,14 +67,12 @@ public class PIDController {
         if (Math.abs(error) <= toleranceTicks) {
             motor.setPower(0);
             pid.reset();
-            //return true;
         }
 
         double power = pid.update(error);
         power = clamp(power, maxPower, 0.07);
 
         motor.setPower(power);
-        //return false;
     }
 
     /* ================= MECANUM DRIVE ================= */
