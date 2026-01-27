@@ -69,7 +69,7 @@ public class FTC2026_1 extends OpMode {
             Outtake1.setPower(1.0);
             Outtake2.setPower(1.0);
         }
-        else if(gamepad2.b) {
+        if(gamepad2.b) {
             Outtake1.setPower(0.0);
             Outtake2.setPower(0.0);
         }
