@@ -4,10 +4,13 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "FTC2026")
 public class FTC2026 extends OpMode {
     public DcMotor DTLeftMotor, DTRightMotor, Intake1, Intake2, Intake3, Intake4, Outtake1, Outtake2;
+
+    public Servo SvOuttake1, SvOuttake2;
 
     // Drive function
     public void drive() {
@@ -18,54 +21,64 @@ public class FTC2026 extends OpMode {
     // Intake function
     public void intake() {
 
-        if (gamepad2.right_bumper) {
+        if (gamepad1.right_bumper) {
             Intake1.setPower(1.0);
             Intake2.setPower(1.0);
-            Intake3.setPower(1.0);
-            Intake4.setPower(1.0);
         }
         else {
             Intake1.setPower(0);
             Intake2.setPower(0);
-            Intake3.setPower(0);
-            Intake4.setPower(0);
+        }
+
+        if (gamepad1.left_bumper) {
+            Intake1.setPower(-1.0);
+            Intake2.setPower(-1.0);
+        }
+        else {
+            Intake1.setPower(0);
+            Intake2.setPower(0);
+        }
+
+        if (gamepad2.right_bumper) {
+            Intake1.setPower(1.0);
+            Intake2.setPower(1.0);
+        }
+        else {
+            Intake1.setPower(0);
+            Intake2.setPower(0);
         }
 
         if (gamepad2.left_bumper) {
             Intake1.setPower(-1.0);
             Intake2.setPower(-1.0);
-            Intake3.setPower(-1.0);
-            Intake4.setPower(-1.0);
         }
         else {
             Intake1.setPower(0);
             Intake2.setPower(0);
-            Intake3.setPower(0);
-            Intake4.setPower(0);
         }
     }
 
     //Outtake function
     public void outtake() {
-        if (gamepad2.a) {
+        /*if (gamepad2.a) {
             Outtake1.setPower(1.0);
-        }
-        else {
-            Outtake1.setPower(0.0);
-        }
-
-        if (gamepad2.dpad_up) {
             Outtake2.setPower(1.0);
         }
         else {
+            Outtake1.setPower(0.0);
             Outtake2.setPower(0.0);
-        }
+        }*/
 
-        if (gamepad2.dpad_down) {
-            Outtake2.setPower(0.5);
-        }
-        else {
-            Outtake2.setPower(0.0);
+        Outtake1.setPower(gamepad2.right_stick_y);
+        Outtake2.setPower(gamepad2.right_stick_y);
+
+        if (gamepad2.dpad_up) {
+            SvOuttake1.setPosition(0.5);
+            SvOuttake2.setPosition(0.5);
+        } else
+        {
+            SvOuttake1.setPosition(0.0);
+            SvOuttake2.setPosition(0.0);
         }
     }
 
@@ -93,8 +106,15 @@ public class FTC2026 extends OpMode {
         // Init outtake motor
         Outtake1 = hardwareMap.get(DcMotor.class, "outtake1"); // port 3 - Control Hub
         Outtake2 = hardwareMap.get(DcMotor.class, "outtake2"); // port 3 - Expansion Hub
+        SvOuttake1 = hardwareMap.get(Servo.class, "svouttake1"); // port 1 - Control Hub
+        SvOuttake2 = hardwareMap.get(Servo.class, "svouttake2"); // port 2 - Control Hub
         Outtake1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         Outtake2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Outtake2.setDirection(DcMotorSimple.Direction.REVERSE);
+        SvOuttake1.setDirection(Servo.Direction.FORWARD);
+        SvOuttake2.setDirection(Servo.Direction.REVERSE);
+        SvOuttake1.setPosition(0.0);
+        SvOuttake2.setPosition(0.0);
     }
 
     @Override
@@ -102,5 +122,6 @@ public class FTC2026 extends OpMode {
         drive();
         intake();
         outtake();
+        telemetry.addData("Right Y:", gamepad2.right_stick_y);
     }
 }
