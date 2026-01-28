@@ -7,7 +7,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -42,6 +44,29 @@ public class auto2026 extends LinearOpMode {
         DTLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         DTRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+
+
+        Intake1 = hardwareMap.get(DcMotor.class, "intake1"); // port 0 - Control Hub
+        Intake2 = hardwareMap.get(DcMotor.class, "intake2"); // port 0 - Expansion Hub
+        Intake3 = hardwareMap.get(DcMotor.class, "intake3"); // port 1 - Control Hub
+        Intake4 = hardwareMap.get(DcMotor.class, "intake4"); // port 1 - Expansion Hub
+        Intake1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Intake2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Intake3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Intake4.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Intake2.setDirection(DcMotorSimple.Direction.REVERSE);
+        Intake4.setDirection(DcMotorSimple.Direction.REVERSE);
+
+//        state = true;
+
+        // Init outtake motor
+        Outtake1 = hardwareMap.get(DcMotor.class, "outtake1"); // port 3 - Control Hub
+        Outtake2 = hardwareMap.get(DcMotor.class, "outtake2"); // port 3 - Expansion Hub
+//        SvOuttake1 = hardwareMap.get(Servo.class, "svouttake1"); // port 1 - Control Hub
+//        SvOuttake2 = hardwareMap.get(Servo.class, "svouttake2"); // port 2 - Control Hub
+        Outtake1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Outtake2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Outtake2.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
         DTLeftMotor.setDirection(DcMotor.Direction.REVERSE);
