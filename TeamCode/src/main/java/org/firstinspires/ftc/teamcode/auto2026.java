@@ -7,7 +7,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -19,7 +21,7 @@ public class auto2026 extends LinearOpMode {
 //    DcMotorEx motor;
 //    public DcMotor DTLeftMotor, DTRightMotor, Intake1, Intake2, Intake3, Intake4, Outtake1, Outtake2;
 
-    DcMotor DTLeftMotor, DTRightMotor;
+    DcMotor DTLeftMotor, DTRightMotor, Intake1, Intake2,Intake3, Intake4, Outtake1, Outtake2;
     public IMU imu;
 
 
@@ -35,12 +37,36 @@ public class auto2026 extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-//        motor = hardwareMap.get(DcMotorEx.class, "motor");
-//        motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        DTRightMotor = hardwareMap.get(DcMotor.class, "DTRightMotor");
+        DTRightMotor = hardwareMap.get(DcMotor.class, "dtrightmotor");
         DTRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        DTLeftMotor = hardwareMap.get(DcMotor.class, "DTLeftMotor");
+        DTLeftMotor = hardwareMap.get(DcMotor.class, "dtleftmotor");
         DTLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        DTLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        DTRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+
+
+        Intake1 = hardwareMap.get(DcMotor.class, "intake1"); // port 0 - Control Hub
+        Intake2 = hardwareMap.get(DcMotor.class, "intake2"); // port 0 - Expansion Hub
+        Intake3 = hardwareMap.get(DcMotor.class, "intake3"); // port 1 - Control Hub
+        Intake4 = hardwareMap.get(DcMotor.class, "intake4"); // port 1 - Expansion Hub
+        Intake1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Intake2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Intake3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Intake4.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Intake2.setDirection(DcMotorSimple.Direction.REVERSE);
+        Intake4.setDirection(DcMotorSimple.Direction.REVERSE);
+
+//        state = true;
+
+        // Init outtake motor
+        Outtake1 = hardwareMap.get(DcMotor.class, "outtake1"); // port 3 - Control Hub
+        Outtake2 = hardwareMap.get(DcMotor.class, "outtake2"); // port 3 - Expansion Hub
+//        SvOuttake1 = hardwareMap.get(Servo.class, "svouttake1"); // port 1 - Control Hub
+//        SvOuttake2 = hardwareMap.get(Servo.class, "svouttake2"); // port 2 - Control Hub
+        Outtake1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Outtake2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Outtake2.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
         DTLeftMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -65,23 +91,31 @@ public class auto2026 extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            //==execute== arms bu cac cho
-            double currentAngle = getYaw();
-            double power = PIDControl(targetAngle, currentAngle);
-
-            DTLeftMotor.setPower(power);
-            DTLeftMotor.setPower(-power);
-
-
-            telemetry.addData("Target (deg)", 90);
-            telemetry.addData("Current (deg)", Math.toDegrees(currentAngle));
-            telemetry.addData("Error (deg)", Math.toDegrees(targetAngle - currentAngle));
-            telemetry.update();
+            //==execute==
+//            double currentAngle = getYaw();
+//            double power = PIDControl(targetAngle, currentAngle);
+//            double error = angleWrap(targetAngle - currentAngle);
+//
+//            DTRightMotor.setPower(power);
+//            DTLeftMotor.setPower(-power);
+//
+//
+//            telemetry.addData("Target (deg)", 90);
+//            telemetry.addData("Current (deg)", Math.toDegrees(currentAngle));
+//            telemetry.addData("Error (deg)", Math.toDegrees(targetAngle - currentAngle));
+//            telemetry.update();
+//
+//            if (Math.abs(error) < Math.toRadians(1)) break;
+//
+//            sleep(10);
+            rotate(90);
 
         }
     }
 
-    //===every another stupid AF functions===
+
+
+    //===another stupid AF functions===
 
 
     //PID
@@ -106,8 +140,8 @@ public class auto2026 extends LinearOpMode {
 
     // ===== IMU YAW =====
     public double getYaw() {
-        YawPitchRollAngles angles = imu.getRobotYawPitchRollAngles();
-        return angles.getYaw(AngleUnit.RADIANS);
+        return imu.getRobotYawPitchRollAngles()
+                .getYaw(AngleUnit.RADIANS);
     }
 
     // ===== UTILS =====
@@ -126,6 +160,49 @@ public class auto2026 extends LinearOpMode {
         DTLeftMotor.setPower(power_left);
         DTRightMotor.setPower(power_right);
         sleep(time);
+        DTLeftMotor.setPower(0);
+        DTRightMotor.setPower(0);
+    }
+
+
+    public void rotate(double degree) {
+
+        // Quay = KHÔNG dùng encoder
+        DTLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        DTRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        double targetRad = Math.toRadians(degree) + getYaw();
+
+        integralSum = 0;
+        lastError = 0;
+        timer.reset();
+
+        while (opModeIsActive()) {
+
+            double current = getYaw();
+            double error = angleWrap(targetRad - current);
+
+            double dt = timer.seconds();
+            timer.reset();
+
+            integralSum += error * dt;
+            integralSum = clamp(integralSum, -0.4, 0.4);
+
+            double derivative = (error - lastError) / dt;
+            lastError = error;
+
+            double power = (Kp * error) + (Ki * integralSum) + (Kd * derivative);
+            power = clamp(power, -1, 1);
+
+            DTLeftMotor.setPower(power);
+            DTRightMotor.setPower(-power);
+
+            // ===== STOP CONDITION =====
+            if (Math.abs(error) < Math.toRadians(1)) break;
+
+            sleep(10); // 100Hz
+        }
+
         DTLeftMotor.setPower(0);
         DTRightMotor.setPower(0);
     }
