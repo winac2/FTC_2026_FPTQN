@@ -35,11 +35,9 @@ public class auto2026 extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-//        motor = hardwareMap.get(DcMotorEx.class, "motor");
-//        motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        DTRightMotor = hardwareMap.get(DcMotor.class, "DTRightMotor");
+        DTRightMotor = hardwareMap.get(DcMotor.class, "dtrightmotor");
         DTRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        DTLeftMotor = hardwareMap.get(DcMotor.class, "DTLeftMotor");
+        DTLeftMotor = hardwareMap.get(DcMotor.class, "dtleftmotor");
         DTLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         DTLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         DTRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -69,22 +67,23 @@ public class auto2026 extends LinearOpMode {
         while (opModeIsActive()) {
 
             //==execute==
-            double currentAngle = getYaw();
-            double power = PIDControl(targetAngle, currentAngle);
-            double error = angleWrap(targetAngle - currentAngle);
-
-            DTRightMotor.setPower(power);
-            DTLeftMotor.setPower(-power);
-
-
-            telemetry.addData("Target (deg)", 90);
-            telemetry.addData("Current (deg)", Math.toDegrees(currentAngle));
-            telemetry.addData("Error (deg)", Math.toDegrees(targetAngle - currentAngle));
-            telemetry.update();
-
-            if (Math.abs(error) < Math.toRadians(1)) break;
-
-            sleep(10);
+//            double currentAngle = getYaw();
+//            double power = PIDControl(targetAngle, currentAngle);
+//            double error = angleWrap(targetAngle - currentAngle);
+//
+//            DTRightMotor.setPower(power);
+//            DTLeftMotor.setPower(-power);
+//
+//
+//            telemetry.addData("Target (deg)", 90);
+//            telemetry.addData("Current (deg)", Math.toDegrees(currentAngle));
+//            telemetry.addData("Error (deg)", Math.toDegrees(targetAngle - currentAngle));
+//            telemetry.update();
+//
+//            if (Math.abs(error) < Math.toRadians(1)) break;
+//
+//            sleep(10);
+            rotate(90);
 
         }
     }
