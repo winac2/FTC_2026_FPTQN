@@ -86,29 +86,29 @@ public class auto2026 extends LinearOpMode {
 
         waitForStart();
 
-        double targetAngle = Math.toRadians(90);
+        double targetAngle = Math.toRadians(80);
         timer.reset();
 
         while (opModeIsActive()) {
 
             //==execute==
-//            double currentAngle = getYaw();
-//            double power = PIDControl(targetAngle, currentAngle);
-//            double error = angleWrap(targetAngle - currentAngle);
-//
-//            DTRightMotor.setPower(power);
-//            DTLeftMotor.setPower(-power);
-//
-//
-//            telemetry.addData("Target (deg)", 90);
-//            telemetry.addData("Current (deg)", Math.toDegrees(currentAngle));
-//            telemetry.addData("Error (deg)", Math.toDegrees(targetAngle - currentAngle));
-//            telemetry.update();
-//
-//            if (Math.abs(error) < Math.toRadians(1)) break;
-//
-//            sleep(10);
-            rotate(90);
+            double currentAngle = getYaw();
+            double power = PIDControl(targetAngle, currentAngle);
+            double error = angleWrap(targetAngle - currentAngle);
+
+            DTRightMotor.setPower(power);
+            DTLeftMotor.setPower(-power);
+
+
+            telemetry.addData("Target (deg)", 90);
+            telemetry.addData("Current (deg)", Math.toDegrees(currentAngle));
+            telemetry.addData("Error (deg)", Math.toDegrees(targetAngle - currentAngle));
+            telemetry.update();
+
+            if (Math.abs(error) < Math.toRadians(0.1)) break;
+
+            sleep(10);
+//            rotate(90);
 
         }
     }
