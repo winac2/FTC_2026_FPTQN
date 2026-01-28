@@ -45,21 +45,21 @@ public class FTC2026_1 extends OpMode {
         }
 
         if (gamepad2.right_bumper) {
-            Intake1.setPower(1.0);
-            Intake2.setPower(1.0);
+            Intake3.setPower(1.0);
+            Intake4.setPower(1.0);
         }
         else {
-            Intake1.setPower(0);
-            Intake2.setPower(0);
+            Intake3.setPower(0);
+            Intake4.setPower(0);
         }
 
         if (gamepad2.left_bumper) {
-            Intake1.setPower(-1.0);
-            Intake2.setPower(-1.0);
+            Intake3.setPower(-1.0);
+            Intake4.setPower(-1.0);
         }
         else {
-            Intake1.setPower(0);
-            Intake2.setPower(0);
+            Intake3.setPower(0);
+            Intake4.setPower(0);
         }
     }
 
