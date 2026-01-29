@@ -189,6 +189,40 @@ public class auto2026 extends LinearOpMode {
         DTRightMotor.setPower(0);
     }
 
+    public void drive_encoder(int target_tick, double power){
+        DTLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        DTRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        //reset encoder
+        DTRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        DTLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        DTLeftMotor.setTargetPosition(target_tick);
+        DTRightMotor.setTargetPosition(target_tick);
+
+        DTRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        DTLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        //RUN
+        DTLeftMotor.setPower(power);
+        DTRightMotor.setPower(power);
+
+        while (opModeIsActive()
+                && DTRightMotor.isBusy()
+                && DTLeftMotor.isBusy()){
+            telemetry.addData("Left", DTLeftMotor.getCurrentPosition());
+            telemetry.addData("Right", DTRightMotor.getCurrentPosition());
+            telemetry.update();
+        }
+        DTLeftMotor.setPower(0);
+        DTRightMotor.setPower(0);
+
+        DTLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        DTRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+
+    }
+
 
     public void rotate(double degree) {
 
@@ -219,8 +253,8 @@ public class auto2026 extends LinearOpMode {
             double power = (Kp * error) + (Ki * integralSum) + (Kd * derivative);
             power = clamp(power, -1, 1);
 
-//            DTLeftMotor.setPower(power);
-//            DTRightMotor.setPower(-power);
+            DTLeftMotor.setPower(power);
+            DTRightMotor.setPower(-power);
             telemetry.addData("Target (deg)", Math.toDegrees(targetRad));
             telemetry.addData("Current (deg)", Math.toDegrees(getYaw()));
             telemetry.addData("Error (deg)", Math.toDegrees(targetRad - getYaw()));
