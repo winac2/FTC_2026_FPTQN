@@ -85,7 +85,9 @@ public class auto2026 extends LinearOpMode {
         imu.resetYaw();
 
         waitForStart();
+        sleep(1000);
 
+//        double targetAngle = Math.toRadians(Math.toDegrees(getYaw()) + 90 );
         double targetAngle = Math.toRadians(90);
         timer.reset();
 
@@ -95,20 +97,28 @@ public class auto2026 extends LinearOpMode {
 //            double currentAngle = getYaw();
 //            double power = PIDControl(targetAngle, currentAngle);
 //            double error = angleWrap(targetAngle - currentAngle);
-//
+
 //            DTRightMotor.setPower(power);
 //            DTLeftMotor.setPower(-power);
-//
-//
-//            telemetry.addData("Target (deg)", 90);
+
+
+//            telemetry.addData("Target (deg)", Math.toDegrees(targetAngle));
 //            telemetry.addData("Current (deg)", Math.toDegrees(currentAngle));
 //            telemetry.addData("Error (deg)", Math.toDegrees(targetAngle - currentAngle));
 //            telemetry.update();
 //
-//            if (Math.abs(error) < Math.toRadians(1)) break;
-//
+//            if (Math.abs(error) < Math.toRadians(1)) telemetry.addData("GG", 'v');
+
 //            sleep(10);
             rotate(90);
+            telemetry.addData("done", "90");
+            telemetry.update();
+
+            rotate(-90);
+            telemetry.addData("done", "-90");
+            telemetry.update();
+
+            break;
 
         }
     }
@@ -116,6 +126,21 @@ public class auto2026 extends LinearOpMode {
 
 
     //===another stupid AF functions===
+
+    //rotate
+    public void quay(double deg){
+        DTLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        DTLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        double currentAngle = getYaw();
+        double power = PIDControl(deg, currentAngle);
+        double error = angleWrap(deg - currentAngle);
+
+        DTRightMotor.setPower(power);
+        DTLeftMotor.setPower(-power);
+
+
+    }
 
 
     //PID
@@ -164,6 +189,40 @@ public class auto2026 extends LinearOpMode {
         DTRightMotor.setPower(0);
     }
 
+    public void drive_encoder(int target_tick, double power){
+        DTLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        DTRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        //reset encoder
+        DTRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        DTLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        DTLeftMotor.setTargetPosition(target_tick);
+        DTRightMotor.setTargetPosition(target_tick);
+
+        DTRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        DTLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        //RUN
+        DTLeftMotor.setPower(power);
+        DTRightMotor.setPower(power);
+
+        while (opModeIsActive()
+                && DTRightMotor.isBusy()
+                && DTLeftMotor.isBusy()){
+            telemetry.addData("Left", DTLeftMotor.getCurrentPosition());
+            telemetry.addData("Right", DTRightMotor.getCurrentPosition());
+            telemetry.update();
+        }
+        DTLeftMotor.setPower(0);
+        DTRightMotor.setPower(0);
+
+        DTLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        DTRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+
+    }
+
 
     public void rotate(double degree) {
 
@@ -196,7 +255,10 @@ public class auto2026 extends LinearOpMode {
 
             DTLeftMotor.setPower(power);
             DTRightMotor.setPower(-power);
-
+            telemetry.addData("Target (deg)", Math.toDegrees(targetRad));
+            telemetry.addData("Current (deg)", Math.toDegrees(getYaw()));
+            telemetry.addData("Error (deg)", Math.toDegrees(targetRad - getYaw()));
+            telemetry.update();
             // ===== STOP CONDITION =====
             if (Math.abs(error) < Math.toRadians(1)) break;
 
