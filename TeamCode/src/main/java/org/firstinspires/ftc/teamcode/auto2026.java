@@ -85,30 +85,40 @@ public class auto2026 extends LinearOpMode {
         imu.resetYaw();
 
         waitForStart();
+        sleep(1000);
 
-        double targetAngle = Math.toRadians(80);
+//        double targetAngle = Math.toRadians(Math.toDegrees(getYaw()) + 90 );
+        double targetAngle = Math.toRadians(90);
         timer.reset();
 
         while (opModeIsActive()) {
 
             //==execute==
-            double currentAngle = getYaw();
-            double power = PIDControl(targetAngle, currentAngle);
-            double error = angleWrap(targetAngle - currentAngle);
+//            double currentAngle = getYaw();
+//            double power = PIDControl(targetAngle, currentAngle);
+//            double error = angleWrap(targetAngle - currentAngle);
 
-            DTRightMotor.setPower(power);
-            DTLeftMotor.setPower(-power);
+//            DTRightMotor.setPower(power);
+//            DTLeftMotor.setPower(-power);
 
 
-            telemetry.addData("Target (deg)", 90);
-            telemetry.addData("Current (deg)", Math.toDegrees(currentAngle));
-            telemetry.addData("Error (deg)", Math.toDegrees(targetAngle - currentAngle));
+//            telemetry.addData("Target (deg)", Math.toDegrees(targetAngle));
+//            telemetry.addData("Current (deg)", Math.toDegrees(currentAngle));
+//            telemetry.addData("Error (deg)", Math.toDegrees(targetAngle - currentAngle));
+//            telemetry.update();
+//
+//            if (Math.abs(error) < Math.toRadians(1)) telemetry.addData("GG", 'v');
+
+//            sleep(10);
+            rotate(90);
+            telemetry.addData("done", "90");
             telemetry.update();
 
-            if (Math.abs(error) < Math.toRadians(0.1)) break;
+            rotate(-90);
+            telemetry.addData("done", "-90");
+            telemetry.update();
 
-            sleep(10);
-//            rotate(90);
+            break;
 
         }
     }
@@ -116,6 +126,21 @@ public class auto2026 extends LinearOpMode {
 
 
     //===another stupid AF functions===
+
+    //rotate
+    public void quay(double deg){
+        DTLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        DTLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        double currentAngle = getYaw();
+        double power = PIDControl(deg, currentAngle);
+        double error = angleWrap(deg - currentAngle);
+
+        DTRightMotor.setPower(power);
+        DTLeftMotor.setPower(-power);
+
+
+    }
 
 
     //PID
@@ -194,9 +219,12 @@ public class auto2026 extends LinearOpMode {
             double power = (Kp * error) + (Ki * integralSum) + (Kd * derivative);
             power = clamp(power, -1, 1);
 
-            DTLeftMotor.setPower(power);
-            DTRightMotor.setPower(-power);
-
+//            DTLeftMotor.setPower(power);
+//            DTRightMotor.setPower(-power);
+            telemetry.addData("Target (deg)", Math.toDegrees(targetRad));
+            telemetry.addData("Current (deg)", Math.toDegrees(getYaw()));
+            telemetry.addData("Error (deg)", Math.toDegrees(targetRad - getYaw()));
+            telemetry.update();
             // ===== STOP CONDITION =====
             if (Math.abs(error) < Math.toRadians(1)) break;
 
