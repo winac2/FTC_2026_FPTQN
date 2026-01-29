@@ -43,22 +43,22 @@ public class FTC2026 extends OpMode {
             Intake2.setPower(0);
         }
 
-        if (gamepad1.right_trigger != 0) {
-            Intake3.setPower(1.0);
-            Intake4.setPower(1.0);
+        if (gamepad2.dpad_up) {
+            Intake1.setPower(1.0);
+            Intake2.setPower(1.0);
         }
         else {
-            Intake3.setPower(0);
-            Intake4.setPower(0);
+            Intake1.setPower(0);
+            Intake2.setPower(0);
         }
 
-        if (gamepad1.left_trigger != 0) {
-            Intake3.setPower(-1.0);
-            Intake4.setPower(-1.0);
+        if (gamepad2.dpad_down) {
+            Intake1.setPower(-1.0);
+            Intake2.setPower(-1.0);
         }
         else {
-            Intake3.setPower(0);
-            Intake4.setPower(0);
+            Intake1.setPower(0);
+            Intake2.setPower(0);
         }
 
         if (gamepad2.right_bumper) {
@@ -81,18 +81,26 @@ public class FTC2026 extends OpMode {
 
         Intake1.setPower(-gamepad2.left_stick_y);
         Intake2.setPower(-gamepad2.left_stick_y);
-        Intake3.setPower(-gamepad2.left_stick_y);
-        Intake4.setPower(-gamepad2.left_stick_y);
+        Intake3.setPower(gamepad2.left_stick_y);
+        Intake4.setPower(gamepad2.left_stick_y);
     }
 
     //Outtake function
     public void outtake() {
-        Outtake1.setPower(Range.scale(-gamepad2.right_stick_y, -1, 1, -0.8, 0.8));
-        Outtake2.setPower(Range.scale(-gamepad2.right_stick_y, -1, 1, -0.8, 0.8));
+        Outtake1.setPower(Range.scale(gamepad2.right_trigger, 0, 1, 0.0, 0.85));
+        Outtake2.setPower(Range.scale(gamepad2.right_trigger, 0, 1, 0.0, 0.85));
 
         if (gamepad2.a) {
-            Outtake1.setPower(0.8);
-            Outtake2.setPower(0.8);
+            Outtake1.setPower(0.81);
+            Outtake2.setPower(0.81);
+        }
+        if (gamepad2.y) {
+            Outtake1.setPower(0.65);
+            Outtake2.setPower(0.65);
+        }
+        if (gamepad2.x) {
+            Outtake1.setPower(0.65);
+            Outtake2.setPower(0.65);
         }
         if (gamepad2.b) {
             Outtake1.setPower(0.0);
