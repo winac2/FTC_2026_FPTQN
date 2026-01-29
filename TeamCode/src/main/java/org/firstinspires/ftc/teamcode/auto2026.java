@@ -27,7 +27,7 @@ public class auto2026 extends LinearOpMode {
 
     //==PID_config==
     double integralSum = 0;
-    double Kp = 2.0;  //quay nhanh, nhung khong bi overshoot
+    double Kp = 0.5;  //quay nhanh, nhung khong bi overshoot
     double Ki = 0.0;    //tranh tinh trang overshoot
     double Kd = 0.2;    //phanh muot hon
 //    double Kf = 10;
@@ -114,9 +114,11 @@ public class auto2026 extends LinearOpMode {
             telemetry.addData("done", "90");
             telemetry.update();
 
-            rotate(-90);
-            telemetry.addData("done", "-90");
-            telemetry.update();
+            sleep(2000);
+
+//            rotate(-90);
+//            telemetry.addData("done", "-90");
+//            telemetry.update();
 
             break;
 
@@ -130,7 +132,7 @@ public class auto2026 extends LinearOpMode {
     //rotate
     public void quay(double deg){
         DTLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        DTLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        DTRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         double currentAngle = getYaw();
         double power = PIDControl(deg, currentAngle);
@@ -189,6 +191,21 @@ public class auto2026 extends LinearOpMode {
         DTRightMotor.setPower(0);
     }
 
+
+    public void shoot(double power){
+        Outtake1.setPower(power);
+        Outtake2.setPower(power);
+    }
+
+    public void take(double power){
+        Intake1.setPower(power);
+        Intake2.setPower(power);
+        Intake3.setPower(power);
+        Intake4.setPower(power);
+
+    }
+
+
     public void drive_encoder(int target_tick, double power){
         DTLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         DTRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -224,13 +241,57 @@ public class auto2026 extends LinearOpMode {
     }
 
 
+//    public void rotate(double degree) {
+//
+//        // Quay = KHÔNG dùng encoder
+//        DTLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        DTRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//
+//        double targetRad = Math.toRadians(degree) + getYaw();
+//
+//        integralSum = 0;
+//        lastError = 0;
+//        timer.reset();
+//
+//        while (opModeIsActive()) {
+//
+//            double current = getYaw();
+//            double error = angleWrap(targetRad - current);
+//
+//            double dt = timer.seconds();
+//            timer.reset();
+//
+//            integralSum += error * dt;
+//            integralSum = clamp(integralSum, -0.4, 0.4);
+//
+//            double derivative = (error - lastError) / dt;
+//            lastError = error;
+//
+//            double power = (Kp * error) + (Ki * integralSum) + (Kd * derivative);
+//            power = clamp(power, -1, 1);
+//
+//            DTLeftMotor.setPower(power);
+//            DTRightMotor.setPower(-power);
+//            telemetry.addData("Target (deg)", Math.toDegrees(targetRad));
+//            telemetry.addData("Current (deg)", Math.toDegrees(getYaw()));
+//            telemetry.addData("Error (deg)", Math.toDegrees(targetRad - getYaw()));
+//            telemetry.update();
+//            // ===== STOP CONDITION =====
+//            if (Math.abs(error) < Math.toRadians(1)) break;
+//
+//            sleep(10); // 100Hz
+//        }
+//
+//        DTLeftMotor.setPower(0);
+//        DTRightMotor.setPower(0);
+//    }
+
     public void rotate(double degree) {
 
-        // Quay = KHÔNG dùng encoder
         DTLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         DTRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        double targetRad = Math.toRadians(degree) + getYaw();
+        double target = angleWrap(getYaw() + Math.toRadians(degree));
 
         integralSum = 0;
         lastError = 0;
@@ -239,30 +300,38 @@ public class auto2026 extends LinearOpMode {
         while (opModeIsActive()) {
 
             double current = getYaw();
-            double error = angleWrap(targetRad - current);
+            double error = angleWrap(target - current);
 
             double dt = timer.seconds();
             timer.reset();
 
-            integralSum += error * dt;
-            integralSum = clamp(integralSum, -0.4, 0.4);
-
             double derivative = (error - lastError) / dt;
             lastError = error;
 
-            double power = (Kp * error) + (Ki * integralSum) + (Kd * derivative);
-            power = clamp(power, -1, 1);
+            double kp = Kp;
+            double kd = Kd;
+
+            if (Math.abs(error) < Math.toRadians(5)) {
+                kp *= 0.4;
+                kd *= 1.5;
+            }
+
+            double power = kp * error + kd * derivative;
+            power = clamp(power, -0.5, 0.5);
+
+            if (Math.abs(power) < 0.08 && Math.abs(error) > Math.toRadians(0.5)) {
+                power = Math.copySign(0.08, power);
+            }
 
             DTLeftMotor.setPower(power);
             DTRightMotor.setPower(-power);
-            telemetry.addData("Target (deg)", Math.toDegrees(targetRad));
-            telemetry.addData("Current (deg)", Math.toDegrees(getYaw()));
-            telemetry.addData("Error (deg)", Math.toDegrees(targetRad - getYaw()));
-            telemetry.update();
-            // ===== STOP CONDITION =====
-            if (Math.abs(error) < Math.toRadians(1)) break;
 
-            sleep(10); // 100Hz
+            if (Math.abs(error) < Math.toRadians(1)
+                    && Math.abs(derivative) < Math.toRadians(10)) {
+                break;
+            }
+
+            sleep(10);
         }
 
         DTLeftMotor.setPower(0);
