@@ -35,8 +35,8 @@ public class FTC2026 extends OpMode {
         turn = Math.signum(turn) * turn * turn;
 
         // scale
-        forward *= 0.8;
-        turn *= 0.6;
+        forward *= 1.0;
+        turn *= 1.0;
 
         double leftMotor = forward + turn;
         double rightMotor = forward - turn;
@@ -56,8 +56,8 @@ public class FTC2026 extends OpMode {
     public void intake() {
 
         if (gamepad1.right_bumper) {
-            Intake1.setPower(-1.0);
-            Intake2.setPower(-1.0);
+            Intake1.setPower(-1.1);
+            Intake2.setPower(-1.1);
         }
         else {
             Intake1.setPower(0);
@@ -65,8 +65,8 @@ public class FTC2026 extends OpMode {
         }
 
         if (gamepad1.left_bumper) {
-            Intake1.setPower(1.0);
-            Intake2.setPower(1.0);
+            Intake1.setPower(1.1);
+            Intake2.setPower(1.1);
         }
         else {
             Intake1.setPower(0);
@@ -74,8 +74,8 @@ public class FTC2026 extends OpMode {
         }
 
         if (gamepad2.dpad_up) {
-            Intake1.setPower(1.0);
-            Intake2.setPower(1.0);
+            Intake1.setPower(1.1);
+            Intake2.setPower(1.1);
         }
         else {
             Intake1.setPower(0);
@@ -83,8 +83,8 @@ public class FTC2026 extends OpMode {
         }
 
         if (gamepad2.dpad_down) {
-            Intake1.setPower(-1.0);
-            Intake2.setPower(-1.0);
+            Intake1.setPower(-1.1);
+            Intake2.setPower(-1.1);
         }
         else {
             Intake1.setPower(0);
@@ -92,8 +92,8 @@ public class FTC2026 extends OpMode {
         }
 
         if (gamepad2.right_bumper) {
-            Intake3.setPower(1.0);
-            Intake4.setPower(1.0);
+            Intake3.setPower(1.1);
+            Intake4.setPower(1.1);
         }
         else {
             Intake3.setPower(0);
@@ -101,8 +101,8 @@ public class FTC2026 extends OpMode {
         }
 
         if (gamepad2.left_bumper) {
-            Intake3.setPower(-1.0);
-            Intake4.setPower(-1.0);
+            Intake3.setPower(-1.1);
+            Intake4.setPower(-1.1);
         }
         else {
             Intake3.setPower(0);
@@ -129,8 +129,8 @@ public class FTC2026 extends OpMode {
             Outtake2.setPower(0.65);
         }
         if (gamepad2.x) {
-            Outtake1.setPower(0.65);
-            Outtake2.setPower(0.65);
+            Outtake1.setPower(0.55);
+            Outtake2.setPower(0.55);
         }
         if (gamepad2.b) {
             Outtake1.setPower(0.0);
