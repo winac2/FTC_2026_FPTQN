@@ -91,11 +91,13 @@ public class auto2026 extends LinearOpMode {
         double targetAngle = Math.toRadians(90);
         timer.reset();
 
-//        rotate2(110);
-//
-//        sleep(1000);
-//
-//        rotate2(110);
+        rotate2(110);
+
+        sleep(1000);
+
+        rotate2(110);
+
+
         while (opModeIsActive()) {
 
             //==execute==
@@ -134,7 +136,7 @@ public class auto2026 extends LinearOpMode {
 
             sleep(2000);
 
-            take(1);
+            take(1); //1
             shoot(1);
 //            rotate2(110);
 //            drive_encoder(200,0.7);
@@ -487,7 +489,7 @@ public class auto2026 extends LinearOpMode {
                 break;
             }
 
-            if (timeoutTimer.seconds() > 10.5) {
+            if (timeoutTimer.seconds() > 1.5) {
                 telemetry.addLine("ROTATE TIMEOUT");
                 telemetry.update();
                 DTLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);

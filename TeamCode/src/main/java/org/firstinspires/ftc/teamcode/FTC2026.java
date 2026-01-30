@@ -173,6 +173,11 @@ public class FTC2026 extends OpMode {
         SvOuttake2.setDirection(Servo.Direction.REVERSE);
         SvOuttake1.setPosition(0.0);
         SvOuttake2.setPosition(0.0);
+
+        Intake1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        Intake2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        Intake3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        Intake4.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
     }
 
     @Override
