@@ -17,10 +17,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 @Autonomous(name="auto2026")
 public class auto2026 extends LinearOpMode {
-
-//    DcMotorEx motor;
-//    public DcMotor DTLeftMotor, DTRightMotor, Intake1, Intake2, Intake3, Intake4, Outtake1, Outtake2;
-
     DcMotor DTLeftMotor, DTRightMotor, Intake1, Intake2,Intake3, Intake4, Outtake1, Outtake2;
     public IMU imu;
 
@@ -62,8 +58,6 @@ public class auto2026 extends LinearOpMode {
         // Init outtake motor
         Outtake1 = hardwareMap.get(DcMotor.class, "outtake1"); // port 3 - Control Hub
         Outtake2 = hardwareMap.get(DcMotor.class, "outtake2"); // port 3 - Expansion Hub
-//        SvOuttake1 = hardwareMap.get(Servo.class, "svouttake1"); // port 1 - Control Hub
-//        SvOuttake2 = hardwareMap.get(Servo.class, "svouttake2"); // port 2 - Control Hub
         Outtake1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         Outtake2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         Outtake2.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -85,74 +79,61 @@ public class auto2026 extends LinearOpMode {
         imu.resetYaw();
 
         waitForStart();
-        sleep(1000);
+        sleep(10);
 
 //        double targetAngle = Math.toRadians(Math.toDegrees(getYaw()) + 90 );
-        double targetAngle = Math.toRadians(90);
+//        double targetAngle = Math.toRadians(90);
         timer.reset();
+ //auto case 1
+        drive_encoder(-1830, 0.7);
 
-        rotate2(110);
+//        rotate2(110);
 
-        sleep(1000);
+        sleep(10);
 
-        rotate2(110);
+        shoot(0.59);
 
+        sleep(2200);
 
-        while (opModeIsActive()) {
+        take(1);
 
-            //==execute==
-//            double currentAngle = getYaw();
-//            double power = PIDControl(targetAngle, currentAngle);
-//            double error = angleWrap(targetAngle - currentAngle);
+        sleep(2000);
 
-//            DTRightMotor.setPower(power);
-//            DTLeftMotor.setPower(-power);
+        shoot(0);
+        take(0);
 
+        drive_encoder(-500,0.7);
 
-//            telemetry.addData("Target (deg)", Math.toDegrees(targetAngle));
-//            telemetry.addData("Current (deg)", Math.toDegrees(currentAngle));
-//            telemetry.addData("Error (deg)", Math.toDegrees(targetAngle - currentAngle));
-//            telemetry.update();
+        sleep(100);
+
+        rotate2(65);
+
+        sleep(100);
+
+        take(1);
+        sleep(100);
+        drive_encoder(1700,0.2);
+        sleep(600);
+        take(0);
+        sleep(100);
+        drive_encoder(-1700,0.5);
+        sleep(100);
+        rotate2(-65);
+        sleep(100);
+        shoot(0.6);
+        sleep(3000);
+        take(1);
+        sleep(3000);
+        drive(-0.6,-1,2000);
+        //1.2.3
+
+//        drive_encoder(750,0.7);
 //
-//            if (Math.abs(error) < Math.toRadians(1)) telemetry.addData("GG", 'v');
-
-//            sleep(10);
-//            drive_encoder(-2000,0.7);
-//            sleep(300);
-//            shoot(-1);
-//            sleep(5000);
-//            take(1);
-//            sleep(3000);
-//            take(0);
-//            shoot(0);
-
-
-
-
-            telemetry.addData("done", "90");
-            telemetry.addData("Y", getYaw());
-
-            telemetry.update();
-
-            sleep(2000);
-
-            take(1); //1
-            shoot(1);
-//            rotate2(110);
-//            drive_encoder(200,0.7);
-//            sleep(100);
-
-//            rotate(-110);
-
-//            rotate(110);
-//            drive_encoder(1000,0.5);
-
-//            rotate(-90);
-//            telemetry.addData("done", "-90");
-//            telemetry.update();
-
-
-
+//        rotate2(60);
+//
+//        drive_encoder(-300,0.7);
+        while (opModeIsActive()) {
+        sleep(10);
         }
     }
 
@@ -256,188 +237,7 @@ public class auto2026 extends LinearOpMode {
     }
 
 
-//    public void rotate(double degree) {
-//
-//        // Quay = KHÔNG dùng encoder
-//        DTLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        DTRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//
-//        double targetRad = Math.toRadians(degree) + getYaw();
-//
-//        integralSum = 0;
-//        lastError = 0;
-//        timer.reset();
-//
-//        while (opModeIsActive()) {
-//
-//            double current = getYaw();
-//            double error = angleWrap(targetRad - current);
-//
-//            double dt = timer.seconds();
-//            timer.reset();
-//
-//            integralSum += error * dt;
-//            integralSum = clamp(integralSum, -0.4, 0.4);
-//
-//            double derivative = (error - lastError) / dt;
-//            lastError = error;
-//
-//            double power = (Kp * error) + (Ki * integralSum) + (Kd * derivative);
-//            power = clamp(power, -1, 1);
-//
-//            DTLeftMotor.setPower(power);
-//            DTRightMotor.setPower(-power);
-//            telemetry.addData("Target (deg)", Math.toDegrees(targetRad));
-//            telemetry.addData("Current (deg)", Math.toDegrees(getYaw()));
-//            telemetry.addData("Error (deg)", Math.toDegrees(targetRad - getYaw()));
-//            telemetry.update();
-//            // ===== STOP CONDITION =====
-//            if (Math.abs(error) < Math.toRadians(1)) break;
-//
-//            sleep(10); // 100Hz
-//        }
-//
-//        DTLeftMotor.setPower(0);
-//        DTRightMotor.setPower(0);
-//    }
 
-    public void rotate1(double degree) {
-
-        DTLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        DTRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        DTLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        DTRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        double target = angleWrap(getYaw() + Math.toRadians(degree));
-
-        integralSum = 0;
-        lastError = 0;
-        timer.reset();
-        ElapsedTime timeoutTimer = new ElapsedTime();
-
-
-        while (opModeIsActive()) {
-
-            double current = getYaw();
-            double error = angleWrap(target - current);
-
-            double dt = timer.seconds();
-            timer.reset();
-
-            double derivative = (error - lastError) / dt;
-            lastError = error;
-
-            double kp = Kp;
-            double kd = Kd;
-
-            if (Math.abs(error) < Math.toRadians(5)) {
-                kp *= 0.4;
-                kd *= 1.5;
-            }
-
-            double power = kp * error + kd * derivative;
-            power = clamp(power, -0.5, 0.5);
-
-            if (Math.abs(power) < 0.02 && Math.abs(error) > Math.toRadians(0.5)) {
-                power = Math.copySign(0.02, power);
-            }
-
-            DTLeftMotor.setPower(power);
-            DTRightMotor.setPower(-power);
-
-            telemetry.addData("Target (deg)", Math.toDegrees(target));
-            telemetry.addData("Current (deg)", Math.toDegrees(getYaw()));
-            telemetry.addData("Error (deg)", Math.toDegrees(target - getYaw()));
-            telemetry.update();
-
-            if (Math.abs(error) < Math.toRadians(20)
-                    && Math.abs(derivative) < Math.toRadians(10)) {
-                break;
-            }
-
-            sleep(10);
-        }
-
-        DTLeftMotor.setPower(0);
-        DTRightMotor.setPower(0);
-
-
-
-
-        sleep(50);
-        imu.resetYaw();
-        sleep(50);
-    }
-
-    public void rotate(double degree) {
-
-        DTLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        DTRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        DTLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        DTRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        double target = angleWrap(getYaw() + Math.toRadians(degree));
-
-        lastError = 0;
-        integralSum = 0;
-
-        ElapsedTime pidTimer = new ElapsedTime();     // cho dt
-        ElapsedTime timeoutTimer = new ElapsedTime(); // cho timeout
-
-        pidTimer.reset();
-        timeoutTimer.reset();
-
-        while (opModeIsActive()) {
-
-            double current = getYaw();
-            double error = angleWrap(target - current);
-
-            double dt = Math.max(pidTimer.seconds(), 0.01); // ⭐ chống dt = 0
-            pidTimer.reset();
-
-            double derivative = (error - lastError) / dt;
-            lastError = error;
-
-            double power = (Kp * error) + (Kd * derivative);
-            power = clamp(power, -0.5, 0.5);
-
-            DTLeftMotor.setPower(power);
-            DTRightMotor.setPower(-power);
-
-            telemetry.addData("Target (deg)", Math.toDegrees(target));
-            telemetry.addData("Yaw (deg)", Math.toDegrees(current));
-            telemetry.addData("Error (deg)", Math.toDegrees(error));
-            telemetry.addData("Time (s)", timeoutTimer.seconds());
-            telemetry.update();
-
-
-            if (Math.abs(error) < Math.toRadians(1.0)) {
-
-                DTLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-                DTRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-                break;
-            }
-
-            if (timeoutTimer.seconds() > 1.5) {
-                telemetry.addLine("ROTATE TIMEOUT");
-                telemetry.update();
-                DTLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-                DTRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-                break;
-            }
-
-            sleep(10);
-        }
-
-        DTLeftMotor.setPower(0);
-        DTRightMotor.setPower(0);
-
-        sleep(50);
-        imu.resetYaw();
-
-        DTLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        DTRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-    }
 
 
 
@@ -489,7 +289,7 @@ public class auto2026 extends LinearOpMode {
                 break;
             }
 
-            if (timeoutTimer.seconds() > 1.5) {
+            if (timeoutTimer.seconds() > 3.4) {
                 telemetry.addLine("ROTATE TIMEOUT");
                 telemetry.update();
                 DTLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
