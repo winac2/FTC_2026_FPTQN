@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
-@TeleOp(name = "FTC2026")
+@TeleOp(name = "FTC2026_1")
 public class FTC2026_1 extends OpMode {
     public DcMotor DTLeftMotor, DTRightMotor, Intake1, Intake2, Intake3, Intake4, Outtake1, Outtake2;
 
@@ -55,14 +55,19 @@ public class FTC2026_1 extends OpMode {
     // Intake function
     public void intake() {
 
-        if (gamepad1.a) {
-            Intake1.setPower(-1.0);
-            Intake2.setPower(-1.0);
+        Intake1.setPower(-gamepad1.right_trigger);
+        if (gamepad1.left_bumper) {
+            Intake1.setPower(-1);
+            Intake2.setPower(-1);
+            Intake3.setPower(1);
+            Intake4.setPower(1);
         }
 
-        if (gamepad1.b) {
-            Intake1.setPower(1.0);
-            Intake2.setPower(1.0);
+        if (gamepad1.left_trigger != 0) {
+            Intake1.setPower(gamepad1.left_trigger);
+            Intake2.setPower(gamepad1.left_trigger);
+            Intake3.setPower(-gamepad1.left_trigger);
+            Intake4.setPower(-gamepad1.left_trigger);
         }
 
         if (gamepad1.x) {
@@ -71,8 +76,8 @@ public class FTC2026_1 extends OpMode {
         }
 
         if (gamepad2.dpad_up) {
-            Intake1.setPower(1.0);
-            Intake2.setPower(1.0);
+            Intake1.setPower(1);
+            Intake2.setPower(1);
         }
         else {
             Intake1.setPower(0);
@@ -80,8 +85,8 @@ public class FTC2026_1 extends OpMode {
         }
 
         if (gamepad2.dpad_down) {
-            Intake1.setPower(-1.0);
-            Intake2.setPower(-1.0);
+            Intake1.setPower(-1);
+            Intake2.setPower(-1);
         }
         else {
             Intake1.setPower(0);
@@ -89,8 +94,8 @@ public class FTC2026_1 extends OpMode {
         }
 
         if (gamepad2.right_bumper) {
-            Intake3.setPower(1.0);
-            Intake4.setPower(1.0);
+            Intake3.setPower(1);
+            Intake4.setPower(1);
         }
         else {
             Intake3.setPower(0);
@@ -98,8 +103,8 @@ public class FTC2026_1 extends OpMode {
         }
 
         if (gamepad2.left_bumper) {
-            Intake3.setPower(-1.0);
-            Intake4.setPower(-1.0);
+            Intake3.setPower(-1);
+            Intake4.setPower(-1);
         }
         else {
             Intake3.setPower(0);
