@@ -55,17 +55,17 @@ public class FTC2026_1 extends OpMode {
     // Intake function
     public void intake() {
 
-        if (gamepad1.a) {
+        if (gamepad1.aWasPressed()) {
             Intake1.setPower(-1.0);
             Intake2.setPower(-1.0);
         }
 
-        if (gamepad1.b) {
+        if (gamepad1.bWasPressed()) {
             Intake1.setPower(1.0);
             Intake2.setPower(1.0);
         }
 
-        if (gamepad1.x) {
+        if (gamepad1.xWasPressed()) {
             Intake1.setPower(0);
             Intake2.setPower(0);
         }
