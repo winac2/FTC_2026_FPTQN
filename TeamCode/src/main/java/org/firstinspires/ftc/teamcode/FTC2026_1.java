@@ -70,11 +70,6 @@ public class FTC2026_1 extends OpMode {
             Intake4.setPower(-gamepad1.left_trigger);
         }
 
-        if (gamepad1.x) {
-            Intake1.setPower(0);
-            Intake2.setPower(0);
-        }
-
         if (gamepad2.dpad_up) {
             Intake1.setPower(1);
             Intake2.setPower(1);
