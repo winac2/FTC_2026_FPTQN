@@ -110,11 +110,29 @@ public class auto2026 extends LinearOpMode {
 //            if (Math.abs(error) < Math.toRadians(1)) telemetry.addData("GG", 'v');
 
 //            sleep(10);
-            rotate(90);
+//            drive_encoder(-2000,0.7);
+//            sleep(300);
+//            shoot(-1);
+//            sleep(5000);
+//            take(1);
+//            sleep(3000);
+//            take(0);
+//            shoot(0);
+
+
+
+            rotate(110);
             telemetry.addData("done", "90");
             telemetry.update();
 
             sleep(2000);
+            drive_encoder(200,0.7);
+            sleep(100);
+
+            rotate(110);
+
+//            rotate(110);
+//            drive_encoder(1000,0.5);
 
 //            rotate(-90);
 //            telemetry.addData("done", "-90");
@@ -200,8 +218,8 @@ public class auto2026 extends LinearOpMode {
     public void take(double power){
         Intake1.setPower(power);
         Intake2.setPower(power);
-        Intake3.setPower(power);
-        Intake4.setPower(power);
+        Intake3.setPower(-power);
+        Intake4.setPower(-power);
 
     }
 
@@ -319,14 +337,19 @@ public class auto2026 extends LinearOpMode {
             double power = kp * error + kd * derivative;
             power = clamp(power, -0.5, 0.5);
 
-            if (Math.abs(power) < 0.08 && Math.abs(error) > Math.toRadians(0.5)) {
-                power = Math.copySign(0.08, power);
+            if (Math.abs(power) < 0.2 && Math.abs(error) > Math.toRadians(0.5)) {
+                power = Math.copySign(0.2, power);
             }
 
             DTLeftMotor.setPower(power);
             DTRightMotor.setPower(-power);
 
-            if (Math.abs(error) < Math.toRadians(1)
+            telemetry.addData("Target (deg)", Math.toDegrees(target));
+            telemetry.addData("Current (deg)", Math.toDegrees(getYaw()));
+            telemetry.addData("Error (deg)", Math.toDegrees(target - getYaw()));
+            telemetry.update();
+
+            if (Math.abs(error) < Math.toRadians(20)
                     && Math.abs(derivative) < Math.toRadians(10)) {
                 break;
             }
@@ -336,7 +359,75 @@ public class auto2026 extends LinearOpMode {
 
         DTLeftMotor.setPower(0);
         DTRightMotor.setPower(0);
+
+
+        sleep(50);
+        imu.resetYaw();
+        sleep(50);
     }
+
+
+
+
+//    public void rotate_left(double degree) {
+//
+//        DTLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        DTRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//
+//        double target = angleWrap(getYaw() + Math.toRadians(degree));
+//
+//        integralSum = 0;
+//        lastError = 0;
+//        timer.reset();
+//
+//        while (opModeIsActive()) {
+//
+//            double current = getYaw();
+//            double error = angleWrap(target - current);
+//
+//            double dt = timer.seconds();
+//            timer.reset();
+//
+//            double derivative = (error - lastError) / dt;
+//            lastError = error;
+//
+//            double kp = Kp;
+//            double kd = Kd;
+//
+//            if (Math.abs(error) < Math.toRadians(5)) {
+//                kp *= 0.4;
+//                kd *= 1.5;
+//            }
+//
+//            double power = kp * error + kd * derivative;
+//            power = clamp(power, -0.5, 0.5);
+//
+//            if (Math.abs(power) < 0.2 && Math.abs(error) > Math.toRadians(0.5)) {
+//                power = Math.copySign(0.2, power);
+//            }
+//
+//            DTLeftMotor.setPower(-power);
+//            DTRightMotor.setPower(power);
+//
+//            telemetry.addData("Target (deg)", Math.toDegrees(target));
+//            telemetry.addData("Current (deg)", Math.toDegrees(getYaw()));
+//            telemetry.addData("Error (deg)", Math.toDegrees(target - getYaw()));
+//            telemetry.update();
+//
+//            if (Math.abs(error) < Math.toRadians(20)
+//                    && Math.abs(derivative) < Math.toRadians(10)) {
+//                break;
+//            }
+//
+//            sleep(10);
+//        }
+//
+//        DTLeftMotor.setPower(0);
+//        DTRightMotor.setPower(0);
+//    }
+
+
+
 
 }
 

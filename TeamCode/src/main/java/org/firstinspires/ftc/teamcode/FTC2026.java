@@ -18,16 +18,46 @@ public class FTC2026 extends OpMode {
 
     // Drive function
     public void drive() {
-        DTLeftMotor.setPower(-gamepad1.left_stick_y);
-        DTRightMotor.setPower(-gamepad1.right_stick_y);
+        double forward = -gamepad1.left_stick_y;
+        double turn = gamepad1.right_stick_x;
+
+        //deadzone
+        if (Math.abs(forward) < 0.05) {
+            forward = 0;
+        }
+
+        if (Math.abs(turn) < 0.05) {
+            turn = 0;
+        }
+
+        //curve (expo)
+        forward = Math.signum(forward) * forward * forward;
+        turn = Math.signum(turn) * turn * turn;
+
+        // scale
+        forward *= 0.8;
+        turn *= 0.6;
+
+        double leftMotor = forward + turn;
+        double rightMotor = forward - turn;
+
+        //normalize
+        double max = Math.max(Math.abs(leftMotor), Math.abs(rightMotor));
+        if (max > 1.0) {
+            leftMotor /= max;
+            rightMotor /= max;
+        }
+
+        DTLeftMotor.setPower(leftMotor);
+        DTRightMotor.setPower(rightMotor);
     }
 
     // Intake function
     public void intake() {
 
         if (gamepad1.right_bumper) {
-            Intake1.setPower(1.0);
-            Intake2.setPower(1.0);
+            Intake1.setPower(-1.0);
+            Intake2.setPower(-1.0);
         }
         else {
             Intake1.setPower(0);
@@ -35,8 +65,8 @@ public class FTC2026 extends OpMode {
         }
 
         if (gamepad1.left_bumper) {
-            Intake1.setPower(-1.0);
-            Intake2.setPower(-1.0);
+            Intake1.setPower(1.0);
+            Intake2.setPower(1.0);
         }
         else {
             Intake1.setPower(0);
