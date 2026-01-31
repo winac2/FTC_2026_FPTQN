@@ -15,8 +15,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
-@Autonomous(name="auto2026(blue_1)")
-public class auto2026 extends LinearOpMode {
+@Autonomous(name="auto26(bule2)")
+public class auto26_blue_2 extends LinearOpMode {
     DcMotor DTLeftMotor, DTRightMotor, Intake1, Intake2,Intake3, Intake4, Outtake1, Outtake2;
     public IMU imu;
 
@@ -84,7 +84,7 @@ public class auto2026 extends LinearOpMode {
 //        double targetAngle = Math.toRadians(Math.toDegrees(getYaw()) + 90 );
 //        double targetAngle = Math.toRadians(90);
         timer.reset();
- //auto case 1
+        //auto case 1
         drive_encoder(-1880, 0.7);
 
 //        rotate2(110);
@@ -128,7 +128,7 @@ public class auto2026 extends LinearOpMode {
 //
 //        drive_encoder(-300,0.7);
         while (opModeIsActive()) {
-        sleep(10);
+            sleep(10);
         }
     }
 

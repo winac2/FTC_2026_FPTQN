@@ -15,8 +15,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
-@Autonomous(name="auto2026(blue_1)")
-public class auto2026 extends LinearOpMode {
+@Autonomous(name="auto26(red2)")
+public class auto26_red_2 extends LinearOpMode {
     DcMotor DTLeftMotor, DTRightMotor, Intake1, Intake2,Intake3, Intake4, Outtake1, Outtake2;
     public IMU imu;
 
@@ -84,51 +84,20 @@ public class auto2026 extends LinearOpMode {
 //        double targetAngle = Math.toRadians(Math.toDegrees(getYaw()) + 90 );
 //        double targetAngle = Math.toRadians(90);
         timer.reset();
- //auto case 1
-        drive_encoder(-1880, 0.7);
 
-//        rotate2(110);
-
+//        drive_encoder_2mor(0,300,0.8);
         sleep(10);
-        shoot(0.63);
-        sleep(2200);
-        take(1);
-        sleep(2000);
+        shoot(0.9);
+        sleep(5000);
+        take(0.6);
+        sleep(15000);
         shoot(0);
         take(0);
-        drive_encoder(-650,0.7);
-        sleep(100);
-        rotate2(70);
-        sleep(100);
-        take(1);
-        sleep(100);
-        drive_encoder(2000,0.2);
-        sleep(600);
-        take(0);
-        sleep(100);
-        drive_encoder(-2000,0.5);
-        take(-0.7);
-        sleep(100);
-        take(0);
-        rotate2(-65);
-        sleep(100);
-        drive_encoder(650,0.8);
-        sleep(100);
-        shoot(0.62);
-        sleep(3000);
-        take(1);
-        sleep(3000);
-        drive(0.8,-0.8,500);
-        drive_encoder(-2000,1);
-        //1.2.3
+        sleep(8000);
+        drive_encoder(800,1);
 
-//        drive_encoder(750,0.7);
-//
-//        rotate2(60);
-//
-//        drive_encoder(-300,0.7);
         while (opModeIsActive()) {
-        sleep(10);
+            sleep(10);
         }
     }
 
@@ -207,6 +176,40 @@ public class auto2026 extends LinearOpMode {
 
         DTLeftMotor.setTargetPosition(target_tick);
         DTRightMotor.setTargetPosition(target_tick);
+
+        DTRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        DTLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        //RUN
+        DTLeftMotor.setPower(power);
+        DTRightMotor.setPower(power);
+
+        while (opModeIsActive()
+                && DTRightMotor.isBusy()
+                && DTLeftMotor.isBusy()){
+            telemetry.addData("Left", DTLeftMotor.getCurrentPosition());
+            telemetry.addData("Right", DTRightMotor.getCurrentPosition());
+            telemetry.update();
+        }
+        DTLeftMotor.setPower(0);
+        DTRightMotor.setPower(0);
+
+        DTLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        DTRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+
+    }
+
+    public void drive_encoder_2mor(int right, int left, double power){
+        DTLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        DTRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        //reset encoder
+        DTRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        DTLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        DTLeftMotor.setTargetPosition(left);
+        DTRightMotor.setTargetPosition(right);
 
         DTRightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         DTLeftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);

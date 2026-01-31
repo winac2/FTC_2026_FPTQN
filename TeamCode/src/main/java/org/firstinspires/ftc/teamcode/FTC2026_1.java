@@ -105,8 +105,8 @@ public class FTC2026_1 extends OpMode {
             Intake4.setPower(0);
         }
 
-        Intake1.setPower(-gamepad2.left_stick_y);
-        Intake2.setPower(-gamepad2.left_stick_y);
+        Intake1.setPower(gamepad2.left_stick_y);
+        Intake2.setPower(gamepad2.left_stick_y);
         Intake3.setPower(gamepad2.left_stick_y);
         Intake4.setPower(gamepad2.left_stick_y);
     }
@@ -125,8 +125,8 @@ public class FTC2026_1 extends OpMode {
             Outtake2.setPower(0.65);
         }
         if (gamepad2.x) {
-            Outtake1.setPower(0.55);
-            Outtake2.setPower(0.55);
+            Outtake1.setPower(0.6);
+            Outtake2.setPower(0.6);
         }
         if (gamepad2.b) {
             Outtake1.setPower(0.0);
